@@ -7,7 +7,7 @@ export const HomeContent = styled.div`
   margin: 0 auto;
 `
 
-export const CoffeesContainer = styled.section`
+export const CoffeesSection = styled.section`
   padding: 2rem 0 9.8125rem;
 
   display: flex;
@@ -21,4 +21,11 @@ export const CoffeesContainer = styled.section`
     font-weight: 800;
     line-height: 130%;
   }
+`
+
+export const CoffeesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  row-gap: 2.5rem;
 `
