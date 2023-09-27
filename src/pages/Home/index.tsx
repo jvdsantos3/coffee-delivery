@@ -1,24 +1,19 @@
-import { HomeContainer, HomeContent, HomeInfo, HomeInfoTexts } from './styles'
-
-import bannerImg from '../../assets/banner.png'
+import { Banner } from './Components/Banner'
+import { CoffeesContainer, HomeContainer, HomeContent } from './styles'
 
 export function Home() {
   return (
     <HomeContainer>
       <HomeContent>
-        <HomeInfo>
-          <HomeInfoTexts>
-            <h1>Encontre o café perfeito para qualquer hora do dia</h1>
-            <p>
-              Com o Coffee Delivery você recebe seu café onde estiver, a
-              qualquer hora
-            </p>
-          </HomeInfoTexts>
+        <Banner />
 
-          <div></div>
-        </HomeInfo>
+        <CoffeesContainer>
+          <h2>Nossos cafés</h2>
 
-        <img src={bannerImg} alt="" />
+          <div>
+            <div></div>
+          </div>
+        </CoffeesContainer>
       </HomeContent>
     </HomeContainer>
   )
