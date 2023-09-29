@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const CheckoutContainer = styled.main`
   max-width: 70rem;
   margin: 0 auto;
-  padding: 2.5rem 0 15rem;
+  padding: 2.5rem 0;
 
   display: flex;
   align-items: flex-start;
@@ -64,13 +64,35 @@ export const BoxHeader = styled.div<BoxHeaderProps>`
 
 export const Address = styled(Box)``
 
-export const AddressFormInput = styled.input`
+export const FormInputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+interface AddressFormInputProps {
+  size: 'full' | 'xl' | 'l' | 'm' | 's'
+}
+
+const inputSizes = {
+  full: '100%',
+  xl: '21.75rem',
+  l: '17.25rem',
+  m: '12.5rem',
+  s: '3.75rem',
+} as const
+
+export const AddressFormInput = styled.input<AddressFormInputProps>`
+  max-width: ${({ size }) => inputSizes[size]};
+  width: 100%;
   padding: 0.75rem;
   background: ${({ theme }) => theme.colors['base-input']};
   border: 1px solid ${({ theme }) => theme.colors['base-button']};
   border-radius: 4px;
 
   color: ${({ theme }) => theme.colors['base-text']};
+  font-size: 0.875rem;
+  line-height: 130%;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors['base-label']};
@@ -81,6 +103,51 @@ export const AddressFormInput = styled.input`
   &:focus {
     outline: 1px solid ${({ theme }) => theme.colors['yellow-dark']};
   }
+`
+
+export const AddressOptionalFormInput = styled.div`
+  max-width: 21.75rem;
+  width: 100%;
+  padding-right: 0.75rem;
+  background: ${({ theme }) => theme.colors['base-input']};
+  border: 1px solid ${({ theme }) => theme.colors['base-button']};
+  border-radius: 4px;
+
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  &:has(input:focus) {
+    outline: 1px solid ${({ theme }) => theme.colors['yellow-dark']};
+  }
+
+  input {
+    all: unset;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem 0 0.75rem 0.75rem;
+    color: ${({ theme }) => theme.colors['base-text']};
+    font-size: 0.875rem;
+    line-height: 130%;
+
+    &::placeholder {
+      color: ${({ theme }) => theme.colors['base-label']};
+      font-size: 0.875rem;
+      line-height: 130%;
+    }
+  }
+
+  span {
+    color: ${({ theme }) => theme.colors['base-label']};
+    font-size: 0.75rem;
+    font-style: italic;
+    line-height: 130%;
+  }
+`
+
+export const InputsLine = styled.div`
+  display: flex;
+  gap: 0.75rem;
 `
 
 export const PaymentMethod = styled(Box)``
@@ -124,4 +191,63 @@ export const PaymentOptionsItem = styled(RadioGroup.Item)`
   }
 `
 
-export const Order = styled.aside``
+export const OrderContainer = styled.aside`
+  max-width: 28rem;
+  flex: 1;
+`
+
+export const OrderContent = styled.div`
+  max-width: 28rem;
+  width: 100%;
+  padding: 2.5rem;
+  background: ${({ theme }) => theme.colors['base-card']};
+  border: 0;
+  border-radius: 6px 44px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  > button {
+    all: unset;
+    height: 2.875rem;
+    background: ${({ theme }) => theme.colors.yellow};
+    border-radius: 6px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 160%;
+    cursor: pointer;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors['yellow-dark']};
+    }
+  }
+`
+
+export const OrderSummary = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`
+
+const OrderSummaryText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 130%;
+`
+
+export const OrderSummaryRegularText = styled(OrderSummaryText)`
+  p {
+    font-size: 0.875rem;
+  }
+`
+
+export const OrderSummaryBoldText = styled(OrderSummaryText)`
+  color: ${({ theme }) => theme.colors['base-subtitle']};
+  font-size: 1.25rem;
+  font-weight: 700;
+`

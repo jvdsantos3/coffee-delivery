@@ -2,11 +2,18 @@ import { CreditCard, CurrencyDollar, MapPinLine } from 'phosphor-react'
 import {
   Address,
   AddressFormInput,
+  AddressOptionalFormInput,
   BoxHeader,
   BoxTitle,
   CheckoutContainer,
   ClientInfos,
-  Order,
+  FormInputs,
+  InputsLine,
+  OrderContainer,
+  OrderContent,
+  OrderSummary,
+  OrderSummaryBoldText,
+  OrderSummaryRegularText,
   PaymentMethod,
   PaymentOptions,
   PaymentOptionsItem,
@@ -14,12 +21,15 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { OrderCoffeeCard } from '../../components/OrderCoffeeCard'
+import expresso from '../../assets/coffees/expresso.svg'
+import latte from '../../assets/coffees/latte.svg'
 
 const completeOrderFormSchema = z.object({
   cep: z.string(),
   street: z.string(),
-  number: z.string(),
-  complemento: z.string().nullable(),
+  number: z.number(),
+  complement: z.string().nullable(),
   neighborhood: z.string(),
   city: z.string(),
   uf: z.string(),
@@ -27,6 +37,23 @@ const completeOrderFormSchema = z.object({
 })
 
 type CompleteOrderFormInputs = z.infer<typeof completeOrderFormSchema>
+
+const orderCoffees = [
+  {
+    id: 1,
+    img: expresso,
+    name: 'Expresso Tradicional',
+    amount: 1,
+    price: 990,
+  },
+  {
+    id: 6,
+    img: latte,
+    name: 'Latte',
+    amount: 1,
+    price: 990,
+  },
+]
 
 export function Checkout() {
   const { control, register } = useForm<CompleteOrderFormInputs>({
@@ -51,14 +78,62 @@ export function Checkout() {
               </div>
             </BoxHeader>
 
-            <div>
+            <FormInputs>
               <AddressFormInput
+                size="m"
                 type="text"
                 placeholder="CEP"
                 required
                 {...register('cep')}
               />
-            </div>
+              <AddressFormInput
+                size="full"
+                type="text"
+                placeholder="Rua"
+                required
+                {...register('street')}
+              />
+              <InputsLine>
+                <AddressFormInput
+                  size="m"
+                  type="text"
+                  placeholder="Número"
+                  required
+                  {...register('number', { valueAsNumber: true })}
+                />
+                <AddressOptionalFormInput>
+                  <input
+                    type="text"
+                    placeholder="Complemento"
+                    {...register('complement')}
+                  />
+                  <span>Optional</span>
+                </AddressOptionalFormInput>
+              </InputsLine>
+              <InputsLine>
+                <AddressFormInput
+                  size="m"
+                  type="text"
+                  placeholder="Bairro"
+                  required
+                  {...register('neighborhood')}
+                />
+                <AddressFormInput
+                  size="l"
+                  type="text"
+                  placeholder="Cidade"
+                  required
+                  {...register('city')}
+                />
+                <AddressFormInput
+                  size="s"
+                  type="text"
+                  placeholder="UF"
+                  required
+                  {...register('uf')}
+                />
+              </InputsLine>
+            </FormInputs>
           </Address>
 
           <PaymentMethod>
@@ -104,9 +179,39 @@ export function Checkout() {
         </form>
       </ClientInfos>
 
-      <Order>
+      <OrderContainer>
         <BoxTitle>Cafés selecionados</BoxTitle>
-      </Order>
+
+        <OrderContent>
+          <div>
+            {orderCoffees.map((coffee) => (
+              <OrderCoffeeCard
+                key={coffee.id}
+                img={coffee.img}
+                name={coffee.name}
+                amount={coffee.amount}
+                price={coffee.price}
+              />
+            ))}
+          </div>
+          <OrderSummary>
+            <OrderSummaryRegularText>
+              <p>Total de itens</p>
+              <span>R$ 29,70</span>
+            </OrderSummaryRegularText>
+            <OrderSummaryRegularText>
+              <p>Entrega</p>
+              <span>R$ 3,50</span>
+            </OrderSummaryRegularText>
+            <OrderSummaryBoldText>
+              <p>Total</p>
+              <span>R$ 33,20</span>
+            </OrderSummaryBoldText>
+          </OrderSummary>
+
+          <button>Confirmar pedido</button>
+        </OrderContent>
+      </OrderContainer>
     </CheckoutContainer>
   )
 }
