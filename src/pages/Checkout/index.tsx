@@ -22,8 +22,8 @@ import { Controller, useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { OrderCoffeeCard } from '../../components/OrderCoffeeCard'
-import expresso from '../../assets/coffees/expresso.svg'
-import latte from '../../assets/coffees/latte.svg'
+import { useContext } from 'react'
+import { CartContext } from '../../contexts/CartContext'
 
 const completeOrderFormSchema = z.object({
   cep: z.string(),
@@ -38,24 +38,9 @@ const completeOrderFormSchema = z.object({
 
 type CompleteOrderFormInputs = z.infer<typeof completeOrderFormSchema>
 
-const orderCoffees = [
-  {
-    id: 1,
-    img: expresso,
-    name: 'Expresso Tradicional',
-    amount: 1,
-    price: 990,
-  },
-  {
-    id: 6,
-    img: latte,
-    name: 'Latte',
-    amount: 1,
-    price: 990,
-  },
-]
-
 export function Checkout() {
+  const { cartItems } = useContext(CartContext)
+
   const { control, register } = useForm<CompleteOrderFormInputs>({
     resolver: zodResolver(completeOrderFormSchema),
     defaultValues: {
@@ -184,13 +169,13 @@ export function Checkout() {
 
         <OrderContent>
           <div>
-            {orderCoffees.map((coffee) => (
+            {cartItems.map((item) => (
               <OrderCoffeeCard
-                key={coffee.id}
-                img={coffee.img}
-                name={coffee.name}
-                amount={coffee.amount}
-                price={coffee.price}
+                key={item.id}
+                img={item.img}
+                name={item.name}
+                amount={item.amount}
+                price={item.price}
               />
             ))}
           </div>

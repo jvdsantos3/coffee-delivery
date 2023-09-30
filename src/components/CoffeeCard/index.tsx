@@ -7,8 +7,11 @@ import {
   CoffeeCardTags,
   CoffeeCardTexts,
 } from './styles'
+import { useContext, useState } from 'react'
+import { CartContext } from '../../contexts/CartContext'
 
 interface CoffeeCardProps {
+  id: number
   img: string
   tags: string[]
   name: string
@@ -17,12 +20,31 @@ interface CoffeeCardProps {
 }
 
 export function CoffeeCard({
+  id,
   img,
   tags,
   name,
   description,
   price,
 }: CoffeeCardProps) {
+  const [coffeeCount, setCoffeeCount] = useState(1)
+
+  const { add } = useContext(CartContext)
+
+  function coffeeCountActions(amount: number) {
+    setCoffeeCount(amount)
+  }
+
+  function addOnCart() {
+    add({
+      id,
+      img,
+      name,
+      price,
+      amount: coffeeCount,
+    })
+  }
+
   const formatedPrice = (price / 100).toFixed(2).replace('.', ',')
 
   return (
@@ -46,8 +68,11 @@ export function CoffeeCard({
         </span>
 
         <CoffeeCardButtons>
-          <InputNumber />
-          <button>
+          <InputNumber
+            amount={coffeeCount}
+            coffeeCountActions={coffeeCountActions}
+          />
+          <button onClick={addOnCart}>
             <ShoppingCart size={22} weight="fill" />
           </button>
         </CoffeeCardButtons>
